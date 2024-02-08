@@ -30,27 +30,3 @@ export interface LocalizedJSONSchema extends JSONSchema6 {
       [k: string]: LocalizedJSONSchemaDefinition
   }
 }
-
-export enum LocalizedSchemaTypes {
-  ARRAY_OF_LOCALIZED_SCHEMA = 'ARRAY_OF_LOCALIZED_SCHEMA',
-  OBJECT_OF_LOCALIZED_SCHEMA = 'OBJECT_OF_LOCALIZED_SCHEMA',
-  LOCALIZED_SCHEMA = 'LOCALIZED_SCHEMA'
-}
-export function getValueTypeWithKey (key: string, value: unknown): string {
-  if (value == null) {
-    return typeof value
-  }
-  if (typeof value === 'object') {
-    if (Array.isArray(value) && ['items', 'allOf', 'anyOf', 'oneOf'].includes(key)) {
-      return LocalizedSchemaTypes.ARRAY_OF_LOCALIZED_SCHEMA
-    }
-    if (['properties', 'patternProperties', 'dependencies', 'definitions'].includes(key)) {
-      return LocalizedSchemaTypes.OBJECT_OF_LOCALIZED_SCHEMA
-    }
-    if (['items', 'additionalItems', 'contains', 'additionalProperties', 'propertyNames', 'not'].includes(key) || Object.keys(value).includes('descriptions')) {
-      return LocalizedSchemaTypes.LOCALIZED_SCHEMA
-    }
-    return 'object'
-  }
-  return typeof value
-}
