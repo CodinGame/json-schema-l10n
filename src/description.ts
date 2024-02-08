@@ -28,10 +28,10 @@ function convertJsonSchemaInObject (object: { [key: string]: unknown }, locale: 
     }
     const valueType = getValueTypeWithKey(key, value)
     if (valueType === LocalizedSchemaTypes.LOCALIZED_SCHEMA) {
-      return { ...json, [key]: convertToJsonSchema(value as LocalizedJSONSchema, locale, descriptionLocale) }
+      return { ...json, [key]: renderJsonSchema(value as LocalizedJSONSchema, locale, descriptionLocale) }
     }
     if (Array.isArray(value) && valueType === LocalizedSchemaTypes.ARRAY_OF_LOCALIZED_SCHEMA) {
-      return { ...json, [key]: value.map(schema => convertToJsonSchema(schema, locale, descriptionLocale)) }
+      return { ...json, [key]: value.map(schema => renderJsonSchema(schema, locale, descriptionLocale)) }
     }
     if (valueType === LocalizedSchemaTypes.OBJECT_OF_LOCALIZED_SCHEMA) {
       return { ...json, [key]: convertJsonSchemaInObject({ ...value }, locale, descriptionLocale) }
@@ -40,7 +40,7 @@ function convertJsonSchemaInObject (object: { [key: string]: unknown }, locale: 
   }, {})
 }
 
-export function convertToJsonSchema (schema: LocalizedJSONSchema, locale: string, descriptionLocale?: string): JSONSchema6 {
+export function renderJsonSchema (schema: LocalizedJSONSchema, locale: string, descriptionLocale?: string): JSONSchema6 {
   const description = getLocalizedDescription(schema, locale, descriptionLocale)
   const { descriptions, ...jsonSchema } = schema
   return {

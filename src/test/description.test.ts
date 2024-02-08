@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals'
 import { Descriptions, LocalizedJSONSchema } from '../types'
-import { convertToJsonSchema, getDescriptions, getLocalizedDescription } from '../description'
+import { renderJsonSchema, getDescriptions, getLocalizedDescription } from '../description'
 
 const description: string = 'test description'
 const englishDescription: string = 'english description'
@@ -43,8 +43,8 @@ describe('Full schema', () => {
     expect(french).toMatch(frenchDescription)
   })
   test('Convert schema', () => {
-    const englishSchema = convertToJsonSchema(fullSchema, 'en')
-    const frenchSchema = convertToJsonSchema(fullSchema, 'fr')
+    const englishSchema = renderJsonSchema(fullSchema, 'en')
+    const frenchSchema = renderJsonSchema(fullSchema, 'fr')
     expect(englishSchema).toMatchObject({ description: englishDescription })
     expect(frenchSchema).toMatchObject({ description: frenchDescription })
   })
@@ -62,8 +62,8 @@ describe('Schema without description', () => {
     expect(french).toMatch(frenchDescription)
   })
   test('Convert schema', () => {
-    const englishSchema = convertToJsonSchema(schemaWithoutDescription, 'en')
-    const frenchSchema = convertToJsonSchema(schemaWithoutDescription, 'fr')
+    const englishSchema = renderJsonSchema(schemaWithoutDescription, 'en')
+    const frenchSchema = renderJsonSchema(schemaWithoutDescription, 'fr')
     expect(englishSchema).toMatchObject({ description: englishDescription })
     expect(frenchSchema).toMatchObject({ description: frenchDescription })
   })
@@ -81,8 +81,8 @@ describe('Schema without descriptions', () => {
     expect(french).toBeUndefined()
   })
   test('Convert schema', () => {
-    const englishSchema = convertToJsonSchema(schemaWithoutDescriptions, 'en')
-    const frenchSchema = convertToJsonSchema(schemaWithoutDescriptions, 'fr')
+    const englishSchema = renderJsonSchema(schemaWithoutDescriptions, 'en')
+    const frenchSchema = renderJsonSchema(schemaWithoutDescriptions, 'fr')
     expect(englishSchema).toMatchObject({ description })
     expect(frenchSchema).toMatchObject({ description })
   })
@@ -100,8 +100,8 @@ describe('Nested schemas', () => {
     expect(french).toMatch(frenchDescription)
   })
   test('Convert schema', () => {
-    const englishSchema = convertToJsonSchema(nestedSchemas, 'en')
-    const frenchSchema = convertToJsonSchema(nestedSchemas, 'fr')
+    const englishSchema = renderJsonSchema(nestedSchemas, 'en')
+    const frenchSchema = renderJsonSchema(nestedSchemas, 'fr')
     expect(englishSchema).toMatchObject({
       description: englishDescription,
       items: [{ description: englishDescription }, { description: englishDescription }],
