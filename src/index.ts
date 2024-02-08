@@ -1,4 +1,4 @@
-import { getDescriptions, getLocalizedDescription } from './description'
+import { convertToJsonSchema, getDescriptions, getLocalizedDescription } from './description'
 import { Descriptions, LocalizedJSONSchema } from './types'
 
 export {
@@ -6,5 +6,6 @@ export {
   LocalizedJSONSchema,
 
   getDescriptions,
-  getLocalizedDescription
+  getLocalizedDescription,
+  convertToJsonSchema
 }
