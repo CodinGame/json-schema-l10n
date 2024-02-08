@@ -29,3 +29,6 @@ The implemented functions are:
 - `getLocalizedDescription`:
   - takes in parameters a schema with localized descriptions, the locale for which we want the description and optionnaly the locale of the default description (default value is `'en'`)
   - returns the description for the wanted locale, or `undefined` if not found
+- `renderJsonSchema`:
+  - takes in parameters a schema with localized descriptions, the locale for which we want the description and optionnaly the locale of the default description (default value is `'en'`)
+  - returns the `JSONSchema6` equivalent with the selected locale
