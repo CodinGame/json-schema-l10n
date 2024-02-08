@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals'
 import { Descriptions, LocalizedJSONSchema } from '../types'
-import { getDescriptions, getLocalizedDescription } from '..'
+import { convertToJsonSchema, getDescriptions, getLocalizedDescription } from '../description'
 
 const description: string = 'test description'
 const englishDescription: string = 'english description'
@@ -19,6 +19,17 @@ const schemaWithoutDescription: LocalizedJSONSchema = {
 const schemaWithoutDescriptions: LocalizedJSONSchema = {
   description
 }
+const nestedSchemas: LocalizedJSONSchema = {
+  description,
+  descriptions,
+  items: [fullSchema, schemaWithoutDescription],
+  additionalItems: false,
+  contains: fullSchema,
+  properties: {
+    test1: schemaWithoutDescriptions,
+    test2: fullSchema
+  }
+}
 
 describe('Full schema', () => {
   test('Descriptions', () => {
@@ -30,6 +41,12 @@ describe('Full schema', () => {
     const french = getLocalizedDescription(fullSchema, 'fr')
     expect(english).toMatch(englishDescription)
     expect(french).toMatch(frenchDescription)
+  })
+  test('Convert schema', () => {
+    const englishSchema = convertToJsonSchema(fullSchema, 'en')
+    const frenchSchema = convertToJsonSchema(fullSchema, 'fr')
+    expect(englishSchema).toMatchObject({ description: englishDescription })
+    expect(frenchSchema).toMatchObject({ description: frenchDescription })
   })
 })
 
@@ -44,6 +61,12 @@ describe('Schema without description', () => {
     expect(english).toMatch(englishDescription)
     expect(french).toMatch(frenchDescription)
   })
+  test('Convert schema', () => {
+    const englishSchema = convertToJsonSchema(schemaWithoutDescription, 'en')
+    const frenchSchema = convertToJsonSchema(schemaWithoutDescription, 'fr')
+    expect(englishSchema).toMatchObject({ description: englishDescription })
+    expect(frenchSchema).toMatchObject({ description: frenchDescription })
+  })
 })
 
 describe('Schema without descriptions', () => {
@@ -56,5 +79,48 @@ describe('Schema without descriptions', () => {
     const french = getLocalizedDescription(schemaWithoutDescriptions, 'fr')
     expect(english).toMatch(description)
     expect(french).toBeUndefined()
+  })
+  test('Convert schema', () => {
+    const englishSchema = convertToJsonSchema(schemaWithoutDescriptions, 'en')
+    const frenchSchema = convertToJsonSchema(schemaWithoutDescriptions, 'fr')
+    expect(englishSchema).toMatchObject({ description })
+    expect(frenchSchema).toMatchObject({ description })
+  })
+})
+
+describe('Nested schemas', () => {
+  test('Descriptions', () => {
+    const localizedDescriptions: Descriptions = getDescriptions(nestedSchemas)
+    expect(localizedDescriptions).toMatchObject(descriptions)
+  })
+  test('Localized description', () => {
+    const english = getLocalizedDescription(nestedSchemas, 'en')
+    const french = getLocalizedDescription(nestedSchemas, 'fr')
+    expect(english).toMatch(englishDescription)
+    expect(french).toMatch(frenchDescription)
+  })
+  test('Convert schema', () => {
+    const englishSchema = convertToJsonSchema(nestedSchemas, 'en')
+    const frenchSchema = convertToJsonSchema(nestedSchemas, 'fr')
+    expect(englishSchema).toMatchObject({
+      description: englishDescription,
+      items: [{ description: englishDescription }, { description: englishDescription }],
+      additionalItems: false,
+      contains: { description: englishDescription },
+      properties: {
+        test1: { description },
+        test2: { description: englishDescription }
+      }
+    })
+    expect(frenchSchema).toMatchObject({
+      description: frenchDescription,
+      items: [{ description: frenchDescription }, { description: frenchDescription }],
+      additionalItems: false,
+      contains: { description: frenchDescription },
+      properties: {
+        test1: { description },
+        test2: { description: frenchDescription }
+      }
+    })
   })
 })
