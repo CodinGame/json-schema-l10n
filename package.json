@@ -23,6 +23,9 @@
     "extends": "@codingame/semantic-release-config-github"
   },
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "json-schema": "^0.4.0"
   },
