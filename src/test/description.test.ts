@@ -39,8 +39,8 @@ describe('Full schema', () => {
     expect(french).toMatch(frenchDescription)
   })
   test('Render schema', () => {
-    const englishSchema = renderJsonSchema(fullSchema, 'en')
-    const frenchSchema = renderJsonSchema(fullSchema, 'fr')
+    const englishSchema = renderJsonSchema('en', fullSchema)
+    const frenchSchema = renderJsonSchema('fr', fullSchema)
     expect(englishSchema).toMatchObject({ description: englishDescription })
     expect(frenchSchema).toMatchObject({ description: frenchDescription })
   })
@@ -54,8 +54,8 @@ describe('Schema without description', () => {
     expect(french).toMatch(frenchDescription)
   })
   test('Render schema', () => {
-    const englishSchema = renderJsonSchema(schemaWithoutDescription, 'en')
-    const frenchSchema = renderJsonSchema(schemaWithoutDescription, 'fr')
+    const englishSchema = renderJsonSchema('en', schemaWithoutDescription)
+    const frenchSchema = renderJsonSchema('fr', schemaWithoutDescription)
     expect(englishSchema).toMatchObject({ description: englishDescription })
     expect(frenchSchema).toMatchObject({ description: frenchDescription })
   })
@@ -69,8 +69,8 @@ describe('Schema without descriptions', () => {
     expect(french).toMatch(description)
   })
   test('Render schema', () => {
-    const englishSchema = renderJsonSchema(schemaWithoutDescriptions, 'en')
-    const frenchSchema = renderJsonSchema(schemaWithoutDescriptions, 'fr')
+    const englishSchema = renderJsonSchema('en', schemaWithoutDescriptions)
+    const frenchSchema = renderJsonSchema('fr', schemaWithoutDescriptions)
     expect(englishSchema).toMatchObject({ description })
     expect(frenchSchema).toMatchObject({ description })
   })
@@ -84,8 +84,8 @@ describe('Nested schemas', () => {
     expect(french).toMatch(frenchDescription)
   })
   test('Render schema', () => {
-    const englishSchema = renderJsonSchema(nestedSchemas, 'en')
-    const frenchSchema = renderJsonSchema(nestedSchemas, 'fr')
+    const englishSchema = renderJsonSchema('en', nestedSchemas)
+    const frenchSchema = renderJsonSchema('fr', nestedSchemas)
     expect(englishSchema).toMatchObject({
       description: englishDescription,
       items: [{ description: englishDescription }, { description: englishDescription }],
