@@ -27,7 +27,5 @@ The implemented functions are:
   - takes in parameters a schema with localized descriptions and the locale for which we want the description (default value is `'en'`)
   - returns the description for the wanted locale, or `undefined` if not found
 - `renderJsonSchema`:
-  - it can take in parameters the locale for which we want the description and a schema with localized descriptions and returns the `JSONSchema6` equivalent with the selected locale
-  - it can take in parameters the locale for which we want the description and a boolean and returns the boolean
-  - it can take in parameters the locale for which we want the description and an undefined schema and returns `undefined`
-  - it can take in parameters the locale for which we want the description and an optional schema with localized descriptions or boolean and returns the `JSONSchema6Definition` equivalent with the selected locale
+  - takes in parameters the locale for which we want the description and a schema with localized descriptions
+  - returns the `JSONSchema6` equivalent with the selected locale
