@@ -8,28 +8,28 @@ export function getDescription (schema: LocalizedJSONSchema, locale: string = DE
   return schema.descriptions?.[locale] ?? description
 }
 
-function renderSimpleJsonSchema (locale: string, schema?: LocalizedJSONSchemaDefinition, descriptionLocale?: string): JSONSchema6Definition | undefined {
+function renderSimpleJsonSchema (locale: string, schema?: LocalizedJSONSchemaDefinition): JSONSchema6Definition | undefined {
   return schema == null
     ? undefined
     : typeof schema === 'boolean'
       ? schema
-      : renderJsonSchema(schema, locale, descriptionLocale)
+      : renderJsonSchema(schema, locale)
 }
 
-function renderArrayOfJsonSchema (locale: string, array?: LocalizedJSONSchemaDefinition[], descriptionLocale?: string): JSONSchema6Definition[] | undefined {
-  return array?.map(schema => renderSimpleJsonSchema(locale, schema, descriptionLocale) as JSONSchema6Definition)
+function renderArrayOfJsonSchema (locale: string, array?: LocalizedJSONSchemaDefinition[]): JSONSchema6Definition[] | undefined {
+  return array?.map(schema => renderSimpleJsonSchema(locale, schema) as JSONSchema6Definition)
 }
 
-function renderObjectOfJsonSchema (locale: string, object?: { [key: string]: LocalizedJSONSchemaDefinition }, descriptionLocale?: string): { [key: string]: JSONSchema6Definition } | undefined {
+function renderObjectOfJsonSchema (locale: string, object?: { [key: string]: LocalizedJSONSchemaDefinition }): { [key: string]: JSONSchema6Definition } | undefined {
   return object == null
     ? undefined
     : Object.entries(object).reduce((newSchema, [key, schema]) => ({
       ...newSchema,
-      [key]: renderSimpleJsonSchema(locale, schema, descriptionLocale)
+      [key]: renderSimpleJsonSchema(locale, schema)
     }), {})
 }
 
-export function renderJsonSchema (schema: LocalizedJSONSchema, locale: string, descriptionLocale?: string): JSONSchema6 {
+export function renderJsonSchema (schema: LocalizedJSONSchema, locale: string): JSONSchema6 {
   const description = getDescription(schema, locale)
   const {
     descriptions,
@@ -53,26 +53,26 @@ export function renderJsonSchema (schema: LocalizedJSONSchema, locale: string, d
     ? undefined
     : Object.entries(dependencies).reduce((newSchema, [key, schema]) => ({
       ...newSchema,
-      [key]: Array.isArray(schema) ? schema : renderSimpleJsonSchema(locale, schema, descriptionLocale)
+      [key]: Array.isArray(schema) ? schema : renderSimpleJsonSchema(locale, schema)
     }), {})
 
   return {
     ...jsonSchema,
     items: Array.isArray(items)
-      ? renderArrayOfJsonSchema(locale, items, descriptionLocale)
-      : renderSimpleJsonSchema(locale, items, descriptionLocale),
-    additionalItems: renderSimpleJsonSchema(locale, additionalItems, descriptionLocale),
-    contains: renderSimpleJsonSchema(locale, contains, descriptionLocale),
-    properties: renderObjectOfJsonSchema(locale, properties, descriptionLocale),
-    patternProperties: renderObjectOfJsonSchema(locale, patternProperties, descriptionLocale),
-    additionalProperties: renderSimpleJsonSchema(locale, additionalProperties, descriptionLocale),
+      ? renderArrayOfJsonSchema(locale, items)
+      : renderSimpleJsonSchema(locale, items),
+    additionalItems: renderSimpleJsonSchema(locale, additionalItems),
+    contains: renderSimpleJsonSchema(locale, contains),
+    properties: renderObjectOfJsonSchema(locale, properties),
+    patternProperties: renderObjectOfJsonSchema(locale, patternProperties),
+    additionalProperties: renderSimpleJsonSchema(locale, additionalProperties),
     dependencies: newDependencies,
-    propertyNames: renderSimpleJsonSchema(locale, propertyNames, descriptionLocale),
-    allOf: renderArrayOfJsonSchema(locale, allOf, descriptionLocale),
-    anyOf: renderArrayOfJsonSchema(locale, anyOf, descriptionLocale),
-    oneOf: renderArrayOfJsonSchema(locale, oneOf, descriptionLocale),
-    not: renderSimpleJsonSchema(locale, not, descriptionLocale),
-    definitions: renderObjectOfJsonSchema(locale, definitions, descriptionLocale),
+    propertyNames: renderSimpleJsonSchema(locale, propertyNames),
+    allOf: renderArrayOfJsonSchema(locale, allOf),
+    anyOf: renderArrayOfJsonSchema(locale, anyOf),
+    oneOf: renderArrayOfJsonSchema(locale, oneOf),
+    not: renderSimpleJsonSchema(locale, not),
+    definitions: renderObjectOfJsonSchema(locale, definitions),
     description: description ?? jsonSchema.description
   }
 }
