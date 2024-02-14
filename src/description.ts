@@ -1,24 +1,11 @@
 import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
 import { DEFAULT_DESCRIPTION_LOCALE } from './constants'
-import { Descriptions, LocalizedJSONSchema, LocalizedJSONSchemaDefinition } from './types'
+import { LocalizedJSONSchema, LocalizedJSONSchemaDefinition } from './types'
 import { isNotEmpty } from './utils'
 
-export function getDescriptions (schema: LocalizedJSONSchema, descriptionLocale: string = DEFAULT_DESCRIPTION_LOCALE): Descriptions {
+export function getDescription (schema: LocalizedJSONSchema, locale: string = DEFAULT_DESCRIPTION_LOCALE): string | undefined {
   const description = isNotEmpty(schema.description) ? schema.description : undefined
-  const descriptions = schema.descriptions
-
-  if (descriptions == null) {
-    return description != null ? { [descriptionLocale]: description } : {}
-  }
-
-  if (description != null && !Object.keys(descriptions).includes(descriptionLocale)) {
-    descriptions[descriptionLocale] = description
-  }
-  return descriptions
-}
-
-export function getLocalizedDescription (schema: LocalizedJSONSchema, locale: string, descriptionLocale?: string): string | undefined {
-  return getDescriptions(schema, descriptionLocale)[locale]
+  return schema.descriptions?.[locale] ?? description
 }
 
 function renderSimpleJsonSchema (locale: string, schema?: LocalizedJSONSchemaDefinition, descriptionLocale?: string): JSONSchema6Definition | undefined {
@@ -43,7 +30,7 @@ function renderObjectOfJsonSchema (locale: string, object?: { [key: string]: Loc
 }
 
 export function renderJsonSchema (schema: LocalizedJSONSchema, locale: string, descriptionLocale?: string): JSONSchema6 {
-  const description = getLocalizedDescription(schema, locale, descriptionLocale)
+  const description = getDescription(schema, locale)
   const {
     descriptions,
     items,
