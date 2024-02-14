@@ -1,1 +1,1 @@
-export const DEFAULT_LOCALE_DESCRIPTION = 'en'
+export const DEFAULT_DESCRIPTION_LOCALE = 'en'

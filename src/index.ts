@@ -1,10 +1,10 @@
-import { getDescriptions, getLocalizedDescription } from './description'
+import { renderJsonSchema, getDescription } from './description'
 import { Descriptions, LocalizedJSONSchema } from './types'
 
 export {
   Descriptions,
   LocalizedJSONSchema,
 
-  getDescriptions,
-  getLocalizedDescription
+  getDescription,
+  renderJsonSchema
 }
