@@ -23,12 +23,11 @@ The implemented types are:
 
 The implemented functions are:
 
-- `getDescriptions`:
-  - takes in parameters a schema with localized descriptions and optionnaly the locale of the default description (default value is `'en'`)
-  - returns the localized descriptions of the schema
 - `getLocalizedDescription`:
-  - takes in parameters a schema with localized descriptions, the locale for which we want the description and optionnaly the locale of the default description (default value is `'en'`)
+  - takes in parameters a schema with localized descriptions and the locale for which we want the description (default value is `'en'`)
   - returns the description for the wanted locale, or `undefined` if not found
 - `renderJsonSchema`:
-  - takes in parameters a schema with localized descriptions, the locale for which we want the description and optionnaly the locale of the default description (default value is `'en'`)
-  - returns the `JSONSchema6` equivalent with the selected locale
+  - it can take in parameters the locale for which we want the description and a schema with localized descriptions and returns the `JSONSchema6` equivalent with the selected locale
+  - it can take in parameters the locale for which we want the description and a boolean and returns the boolean
+  - it can take in parameters the locale for which we want the description and an undefined schema and returns `undefined`
+  - it can take in parameters the locale for which we want the description and an optional schema with localized descriptions or boolean and returns the `JSONSchema6Definition` equivalent with the selected locale
