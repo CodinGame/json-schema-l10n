@@ -1,7 +1,13 @@
 import { JSONSchema6 } from 'json-schema'
 
+export const DESCRIPTION_KEY_EN = 'en'
+export const DESCRIPTION_KEY_FR = 'fr'
+export const DESCRIPTION_KEY_ES = 'es'
+
 export type Descriptions = {
-  [key: string]: string
+  [DESCRIPTION_KEY_EN]?: string,
+  [DESCRIPTION_KEY_FR]?: string,
+  [DESCRIPTION_KEY_ES]?: string,
 }
 
 export type LocalizedJSONSchemaDefinition = LocalizedJSONSchema | boolean

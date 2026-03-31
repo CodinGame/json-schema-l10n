@@ -1,11 +1,21 @@
 import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
 import { DEFAULT_DESCRIPTION_LOCALE } from './constants'
-import { LocalizedJSONSchema, LocalizedJSONSchemaDefinition } from './types'
+import { DESCRIPTION_KEY_EN, DESCRIPTION_KEY_FR, DESCRIPTION_KEY_ES, LocalizedJSONSchema, LocalizedJSONSchemaDefinition } from './types'
 import { isNotEmpty } from './utils'
 
 function getDescription (schema: LocalizedJSONSchema, locale: string = DEFAULT_DESCRIPTION_LOCALE): string | undefined {
   const description = isNotEmpty(schema.description) ? schema.description : undefined
-  return schema.descriptions?.[locale] ?? description
+  let d
+  if (schema.descriptions === undefined) {
+    d = description
+  } else if (locale == DESCRIPTION_KEY_EN) {
+    d = schema.descriptions[DESCRIPTION_KEY_EN]
+  } else if (locale == DESCRIPTION_KEY_FR) {
+    d = schema.descriptions[DESCRIPTION_KEY_FR]
+  } else if (locale == DESCRIPTION_KEY_ES) {
+    d = schema.descriptions[DESCRIPTION_KEY_ES]
+  }
+  return d
 }
 
 function renderArrayOfJsonSchema (locale: string, array?: LocalizedJSONSchemaDefinition[]): JSONSchema6Definition[] | undefined {
@@ -30,6 +40,10 @@ function renderJsonSchema (locale: string, schema?: LocalizedJSONSchemaDefinitio
     return undefined
   } else if (typeof schema === 'boolean') {
     return schema
+  }
+
+  if (locale != DESCRIPTION_KEY_EN && locale != DESCRIPTION_KEY_FR && locale != DESCRIPTION_KEY_ES) {
+    throw new Error('Wrong locale')
   }
 
   const description = getDescription(schema, locale)
