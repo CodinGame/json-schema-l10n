@@ -5,6 +5,7 @@ import { renderJsonSchema, getDescription } from '../description'
 const description: string = 'test description'
 const englishDescription: string = 'english description'
 const frenchDescription: string = 'french description'
+const chineseDescription: string = 'chinese description'
 const descriptions: Descriptions = {
   en: englishDescription,
   fr: frenchDescription
@@ -28,6 +29,13 @@ const nestedSchemas: LocalizedJSONSchema = {
   properties: {
     test1: schemaWithoutDescriptions,
     test2: fullSchema
+  }
+}
+const schemaWithUnsupportedLocale: LocalizedJSONSchema = {
+  description,
+  descriptions: {
+    ...descriptions,
+    zh: chineseDescription
   }
 }
 
@@ -106,5 +114,11 @@ describe('Nested schemas', () => {
         test2: { description: frenchDescription }
       }
     })
+  })
+})
+
+describe('Locale limitation', () => {
+  test('Unsupported locale fallbacks to default description', () => {
+    expect(() => renderJsonSchema('zh', schemaWithUnsupportedLocale)).toMatchObject({ description })
   })
 })
